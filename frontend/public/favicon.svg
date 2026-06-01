@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Bounding brackets -->
+  <path d="M4 8V6a2 2 0 0 1 2-2h2" />
+  <path d="M20 8V6a2 2 0 0 0-2-2h-2" />
+  <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+  <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
+  
+  <!-- Mini QR/Matrix Grid elements in center -->
+  <rect x="7" y="7" width="3" height="3" fill="#6366f1" stroke="none" />
+  <rect x="14" y="7" width="3" height="3" fill="#6366f1" stroke="none" />
+  <rect x="7" y="14" width="3" height="3" fill="#6366f1" stroke="none" />
+  <rect x="14" y="14" width="3" height="3" fill="#6366f1" stroke="none" />
+  <rect x="11" y="11" width="2" height="2" fill="#6366f1" stroke="none" />
+
+  <!-- Laser scanning horizontal line -->
+  <line x1="3" y1="12" x2="21" y2="12" stroke="#10b981" stroke-width="2.5" />
+</svg>
