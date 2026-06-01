@@ -67,13 +67,14 @@ async def decode_code(
             )
 
         # 4. Perform decoding
-        success, decoded_text, format_detected = decoder.decode(image, format_hint=format)
+        success, decoded_text, format_detected, recreated_svg = decoder.decode(image, format_hint=format)
 
         if success:
             return DecodeResponse(
                 success=True,
                 content=decoded_text,
-                format=format_detected
+                format=format_detected,
+                recreated_svg=recreated_svg
             )
         else:
             return DecodeResponse(

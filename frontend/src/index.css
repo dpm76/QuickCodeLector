@@ -640,3 +640,42 @@ body {
     margin-bottom: 0.5rem;
   }
 }
+
+/* Recreated Code styles */
+.recreated-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.recreated-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: #ffffff; /* Solid white background for optimal scannability */
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.recreated-canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+.render-error {
+  color: var(--error-color);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(220, 38, 38, 0.05);
+  border-radius: 6px;
+  border: 1px dashed var(--error-color);
+}

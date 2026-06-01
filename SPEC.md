@@ -98,6 +98,20 @@ Receives image file payload, validates structure, and decodes content.
 | `cameraActive` | `boolean` | `false` | Indicates if HTML5 camera video stream is active |
 | `maxFileSize` | `number` | `2097152` | Local size boundary fetched from settings (default 2MB) |
 
+### 3.3 Barcode & QR Code Recreation Layout Fidelity
+
+Recreating a 2D matrix code (e.g., QR Code, Data Matrix, Aztec Code) from its text content alone is insufficient to guarantee that the generated code matches the original scanned image. This is because matrix codes have several variable parameters that affect module (dot) arrangement:
+- **Error Correction Level (ECL):** Redundancy levels (e.g., QR Code levels L, M, Q, H) modify the grid size and internal pixel configurations.
+- **Mask Patterns:** Standard encoders apply penalty-minimizing mask patterns (8 choices for QR codes) to balance light and dark pixels, shifting module layouts entirely.
+- **Symbology Versions:** Grid dimensions (versions 1-40 for QR Code, grid dimensions for Data Matrix) define the physical cell count.
+- **Encoding Modes:** How the raw data is packed (ASCII, C40, numeric, alphanumeric, byte, kanji) directly changes the layout of data bits.
+
+**Contractual Solution:**
+To guarantee a dot-perfect visual replica:
+- The backend `ZXingDecoder` retrieves the exact symbology parameters (ECL, mask patterns, versions) during decoding from the scanned image.
+- Instead of using a client-side encoder that guesses parameters, the decoded C++ `Barcode` object on the backend calls `.to_svg()`. This outputs a vector SVG string preserving the identical dot layout.
+- The React frontend consumes this SVG string and draws it onto a canvas for visual styling and export options.
+
 ---
 
 ## 4. UI Component Specification
@@ -119,6 +133,10 @@ Receives image file payload, validates structure, and decodes content.
 3. **`ResultSection`:**
    - Evaluates results content. If matched against URL structures, render dynamic anchor element directing targets to new browser tab (`target="_blank"` and `rel="noopener noreferrer"`).
    - Clipboard copy provides interactive checkmarks, reverting state back after 2 seconds.
+   - **Barcode Recreation:** Uses `bwip-js` to recreate the barcode/2D code on the fly in the UI.
+     - Displays the recreated code inside a container styled with a solid white background to guarantee high contrast and scannability, regardless of the active visual theme.
+     - Handles render failures gracefully, displaying a validation error message in the UI if the content does not match the rules of the code format.
+     - Exposes two download actions: **Download PNG** (converts the canvas drawing to a downloadable raster image) and **Download SVG** (generates a clean vector-based file suitable for insertion into documents).
 4. **`ThemeToggle`:**
    - Circular floating button in the top-right corner toggling between `"light"` and `"dark"`.
 5. **Logo:**

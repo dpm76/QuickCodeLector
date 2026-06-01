@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 export interface ScanResult {
   content: string;
   format: string;
+  recreatedSvg?: string;
 }
 
 export type InputMethod = "upload" | "camera";
@@ -156,6 +157,7 @@ export const useBarcodeScanner = () => {
       setScanResult({
         content: data.content,
         format: data.format,
+        recreatedSvg: data.recreated_svg,
       });
     } else {
       setError(data.message || "Failed to decode barcode.");

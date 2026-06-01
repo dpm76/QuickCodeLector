@@ -16,15 +16,16 @@ from app.core.config import settings
 client = TestClient(app)
 
 class MockDecoder(IBarcodeDecoder):
-    def __init__(self, should_succeed: bool = True, text: str = "DecodedText", format_detected: str = "QR_CODE"):
+    def __init__(self, should_succeed: bool = True, text: str = "DecodedText", format_detected: str = "QR_CODE", recreated_svg: str = "<svg>MockSVG</svg>"):
         self.should_succeed = should_succeed
         self.text = text
         self.format_detected = format_detected
+        self.recreated_svg = recreated_svg
 
     def decode(self, image: Image.Image, format_hint: str = None):
         if self.should_succeed:
-            return True, self.text, self.format_detected
-        return False, None, "No legible code found"
+            return True, self.text, self.format_detected, self.recreated_svg
+        return False, None, "No legible code found", None
 
 def test_read_root():
     response = client.get("/")

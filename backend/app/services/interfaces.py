@@ -4,7 +4,7 @@ from PIL import Image
 
 class IBarcodeDecoder(ABC):
     @abstractmethod
-    def decode(self, image: Image.Image, format_hint: Optional[str] = None) -> Tuple[bool, Optional[str], Optional[str]]:
+    def decode(self, image: Image.Image, format_hint: Optional[str] = None) -> Tuple[bool, Optional[str], Optional[str], Optional[str]]:
         """
         Decodes a barcode or 2D code from a PIL Image.
         
@@ -14,6 +14,6 @@ class IBarcodeDecoder(ABC):
                          If 'AUTO', or None, the decoder should attempt auto-detection.
                          
         Returns:
-            A tuple of (success: bool, content: Optional[str], format_name: Optional[str])
+            A tuple of (success: bool, content: Optional[str], format_name: Optional[str], recreated_svg: Optional[str])
         """
         pass

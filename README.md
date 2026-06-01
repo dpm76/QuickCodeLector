@@ -27,7 +27,8 @@ QuickCodeLector is a robust, responsive web application designed to scan and dec
 - **Multi-Symbology Support:** Decodes 2D codes (**QR Code, Micro QR, rMQR, Data Matrix, Aztec**) and 1D barcodes (**EAN-13, EAN-8, UPC-A, UPC-E, ITF, Code 128, Code 39, Codabar, PDF417**).
 - **Format Filtering & Auto-Detect:** Users can select specific expected formats to optimize reader scan performance or let the engine auto-detect formats (`AUTO`).
 - **Dynamic Camera Capture & Auto-Off:** Streams device camera frames (`getUserMedia`) into a static `<video>` feed inside an overlay scanner frame. To preserve hardware resources and privacy, **the camera is shut down immediately after a frame is captured** and before sending the bytes to the backend.
-- **Unified Visor Previews:** Once an image is uploaded or captured via the camera, the static image is displayed inside the visor container. Clicking **"Scan Another Code"** clears the results and automatically restarts the camera stream (in camera mode).
+- **Unified Visor Previews & Instant Reset:** Once an image is uploaded or captured via the camera, the static image is displayed inside the visor container. Clicking **"Scan Another Code"** clears all active results, resets the application to the initial file-upload view, and releases all camera feeds.
+- **Barcode Recreation & Export (Dot-Perfect Fidelity):** When a code is successfully decoded, a clean digital replica is generated on-the-fly inside a high-contrast white card. Unlike generic client-side encoders that guess parameters and render different layouts, our backend extracts the exact metadata of the scanned code (such as Error Correction Levels, mask patterns, version sizes, and encoding modes) directly from the C++ decoding engine to recreate a dot-perfect visual replica. Exposes buttons to download the recreation as a high-quality **PNG** image or a scale-independent vector **SVG** file.
 - **Environment-Configurable File Size Limits:** Enforces a configurable file size limit (default **2MB**). The backend publishes this limit on `GET /api/settings`, which the React client hook fetches on mount to dynamically update UI hints and apply client-side validations.
 - **Light & Dark Themes:** Features a polished layout using Vanilla CSS variables. The page renders in a high-contrast **Light Theme** by default (ideal for daytime scanning) and can be toggled to a neon **Dark Theme** using a floating switcher. State is persisted inside the browser's `localStorage` to prevent visual flashes.
 - **Privacy Core:** Images are processed as byte arrays in-memory and are never stored on the server's hard drive.
@@ -55,7 +56,7 @@ QuickCodeLector is designed following clean architecture guidelines and strictly
 ## Technology Stack
 
 - **Backend:** Python 3.10+, FastAPI, Uvicorn, Pillow (image manipulation), NumPy, and `zxing-cpp` (modern bindings to ZXing C++).
-- **Frontend:** React 19, TypeScript, Vite, Vanilla CSS.
+- **Frontend:** React 19, TypeScript, Vite, `bwip-js` (client-side barcode generation), Vanilla CSS.
 - **Testing:** `pytest` & `FastAPI TestClient` (Backend); `Vitest` & `React Testing Library` (Frontend).
 
 ---
