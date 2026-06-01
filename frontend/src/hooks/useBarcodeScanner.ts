@@ -124,7 +124,8 @@ export const useBarcodeScanner = () => {
     setError(null);
   };
 
-  const resetScanner = async () => {
+  const resetScanner = () => {
+    setInputMethod("upload");
     setFile(null);
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
@@ -132,11 +133,6 @@ export const useBarcodeScanner = () => {
     }
     setScanResult(null);
     setError(null);
-    
-    if (inputMethod === "camera") {
-      // Auto-restart camera when resetting in camera mode
-      await startCamera();
-    }
   };
 
   // Shared API call logic

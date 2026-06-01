@@ -38,11 +38,11 @@ export const ImageScanner: React.FC<ImageScannerProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Setup camera stream when camera tab is open
+  // Setup camera stream when camera tab is open or reset
   useEffect(() => {
     let activeStream: MediaStream | null = null;
 
-    if (inputMethod === "camera") {
+    if (inputMethod === "camera" && !previewUrl) {
       startCamera().then((stream) => {
         if (stream && videoRef.current) {
           videoRef.current.srcObject = stream;
@@ -57,7 +57,7 @@ export const ImageScanner: React.FC<ImageScannerProps> = ({
       }
       stopCamera();
     };
-  }, [inputMethod]);
+  }, [inputMethod, previewUrl]);
 
   // Drag and drop handlers
   const handleDragOver = (e: React.DragEvent) => {
@@ -91,11 +91,21 @@ export const ImageScanner: React.FC<ImageScannerProps> = ({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={onFileSelectChange}
+        accept="image/*"
+        style={{ display: "none" }}
+      />
       {/* Input Method Selector Tab */}
       <div className="input-tabs">
         <button
           className={`tab-btn ${inputMethod === "upload" ? "active" : ""}`}
-          onClick={() => setInputMethod("upload")}
+          onClick={() => {
+            setInputMethod("upload");
+            triggerFileSelect();
+          }}
           aria-label="Upload an image file"
         >
           <svg
@@ -150,13 +160,7 @@ export const ImageScanner: React.FC<ImageScannerProps> = ({
               tabIndex={0}
               aria-label="Drag and drop or click to upload barcode image"
             >
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={onFileSelectChange}
-                accept="image/*"
-                style={{ display: "none" }}
-              />
+
               <div className="upload-icon">
                 <svg
                   width="40"
